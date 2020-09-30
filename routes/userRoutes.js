@@ -48,4 +48,25 @@ module.exports = app => {
             res.sendStatus(200);
         });
     });
+
+    app.put('/user', (req, res) => {
+        let user;
+        let email = req.query.email;
+        let username = req.body.username;
+
+        jsonfile.readFile(file_path, (err, content)=>{
+            for(let i = content.length - 1; i >= 0; i--){
+                if(content[i].email === req.query.email){
+                    console.log('Updated user ' + email + ' has now username : ' + username )
+                    user = content[i];
+                    user.username = username;
+                }
+            }
+            jsonfile.writeFile(file_path, content, (err)=>{
+                console.log(err);
+            })
+        });
+        res.send(user);
+
+    });
 }
